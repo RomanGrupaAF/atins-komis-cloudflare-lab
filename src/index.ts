@@ -12,7 +12,28 @@
  */
 
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response("Hello World!");
+	async fetch(request): Promise<Response> {
+		const url = new URL(request.url);
+
+		if (request.method === "GET" && url.pathname === "/api/health") {
+			return Response.json({
+				status: "ok",
+				service: "atins-komis-cloudflare-lab",
+			});
+		}
+
+		if (request.method === "GET" && url.pathname === "/api/cars") {
+			return Response.json([
+				{
+					id: 1,
+					brand: "Toyota",
+					model: "Corolla",
+					year: 2021,
+					status: "AVAILABLE",
+				},
+			]);
+		}
+
+		return new Response("Not Found", { status: 404 });
 	},
 } satisfies ExportedHandler<Env>;
