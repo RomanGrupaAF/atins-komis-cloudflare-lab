@@ -11,8 +11,11 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-export default {
-	async fetch(request): Promise<Response> {
+		export default {
+			async fetch(
+			request: Request,
+			env: Env,
+		): Promise<Response> {
 		const url = new URL(request.url);
 
 		if (request.method === "GET" && url.pathname === "/api/health") {
@@ -23,16 +26,21 @@ export default {
 		}
 
 		if (request.method === "GET" && url.pathname === "/api/cars") {
-			return Response.json([
-				{
-					id: 1,
-					brand: "Toyota",
-					model: "Corolla",
-					year: 2021,
-					status: "AVAILABLE",
-				},
-			]);
-		}
+			const result = await env.DB.prepare(`
+				SELECT
+					id,
+					brand,
+					model,
+					production_year,
+					mileage_km,
+					price_pln,
+					status
+				FROM cars
+				ORDER BY id
+			`).all();
+
+	return Response.json(result.results);
+}
 
 		return new Response("Not Found", { status: 404 });
 	},
