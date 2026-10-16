@@ -44,3 +44,14 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Smoke test STAGE health
+        run: |
+          curl --fail --silent --show-error \
+            https://atins-komis-cloudflare-lab.atins-komis.workers.dev/api/health \
+            | grep -q '"status":"ok"'
+
+      - name: Smoke test STAGE cars
+        run: |
+          curl --fail --silent --show-error \
+            https://atins-komis-cloudflare-lab.atins-komis.workers.dev/api/cars
