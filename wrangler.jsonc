@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "atins-komis-cloudflare-lab",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-06",
+
+  "observability": {
+    "enabled": true
+  },
+
+  "upload_source_maps": true,
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "atins-komis-stage",
+      "database_id": "b812578f-422e-42bd-88c4-1576fedc84fe",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  "env": {
+    "production": {
+      "name": "atins-komis-cloudflare-prod",
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "atins-komis-prod",
+          "database_id": "f2570c24-8ce9-4dea-98eb-293033ac4257",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
+}
